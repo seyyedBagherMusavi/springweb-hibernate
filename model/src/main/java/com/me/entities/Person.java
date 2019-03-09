@@ -16,7 +16,7 @@ Year: 2019
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @NotEmpty(message = "Please enter your firstName")
     @Size(min = 5, max = 10, message = "نام نمیتواند کمتر از 5 کاراکتر باشد")
@@ -37,11 +37,11 @@ public class Person {
 
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

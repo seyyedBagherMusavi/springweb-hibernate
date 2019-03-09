@@ -1,16 +1,20 @@
 package com.me.config;
 
-import org.hibernate.cfg.Environment;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
+import java.util.Properties;
 
 import javax.sql.DataSource;
-import java.util.Properties;
+
+import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 /* com.me.config
 @Author:Peyman
@@ -20,16 +24,17 @@ Year: 2019
 */
 @Configuration
 @EnableTransactionManagement
+@ComponentScan(basePackages = { "com.me" })
 public class HibernateConfig {
 
 
-    @Bean
+  /**  @Bean
     @Autowired
     public DataSourceTransactionManager transactionManager(DataSource ds) {
         DataSourceTransactionManager txManager = new DataSourceTransactionManager();
         txManager.setDataSource(ds);
         return txManager;
-    }
+    }**/
 
 
     @Bean
@@ -54,9 +59,10 @@ public class HibernateConfig {
     private final Properties hibernateProperties() {
         Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty(
-                Environment.HBM2DDL_AUTO, "update");
+                org.hibernate.cfg.Environment.HBM2DDL_AUTO, "update");
+        hibernateProperties.put("hibernate.format_sql", "true");
         hibernateProperties.setProperty(
-                Environment.DIALECT, "org.hibernate.dialect.MySQL5Dialect");
+                org.hibernate.cfg.Environment.DIALECT, "org.hibernate.dialect.MySQL5InnoDBDialect");
 
         hibernateProperties.setProperty(
                 "hibernate.show_sql", "true");
@@ -65,5 +71,10 @@ public class HibernateConfig {
 
         return hibernateProperties;
     }
-
+    @Bean
+    public HibernateTransactionManager getTransactionManager() {
+        HibernateTransactionManager transactionManager = new HibernateTransactionManager();
+        transactionManager.setSessionFactory(sessionFactory().getObject());
+        return transactionManager;
+    }
 }

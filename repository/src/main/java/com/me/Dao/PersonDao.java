@@ -13,6 +13,6 @@ Year: 2019
 public interface PersonDao {
     void save(Person person);
     void update(Person person);
-    void delete(Long id);
+    void delete(int id);
     List<Person> selectAll();
 }

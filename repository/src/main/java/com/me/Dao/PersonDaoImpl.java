@@ -5,6 +5,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -32,12 +33,16 @@ public class PersonDaoImpl implements PersonDao {
     }
 
     @Override
-    public void delete(Long id) {
-        System.out.println("id:"+id);
-        Session session = sessionFactory.openSession();
-        Person person = new Person();
-        person.setId(id);
-        session.delete(person);
+    public void delete(int id) {
+        Session session = sessionFactory.getCurrentSession();
+        Person book = session.byId(Person.class).load(id);
+        session.delete(book);
+    /**   Session  session=sessionFactory.getObject().openSession();
+        Person p = (Person) session.load(Person.class, new Integer(id));
+        if(null != p){
+            System.out.println(p);
+            session.delete(p);
+        }**/
     }
 
     @Override

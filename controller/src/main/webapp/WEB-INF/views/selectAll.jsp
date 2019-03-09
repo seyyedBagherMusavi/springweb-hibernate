@@ -27,7 +27,7 @@
             <td><c:out value="${person.name}" /></td>
             <td><c:out value="${person.family}" /></td>
             <td><c:out value="${person.age}" /></td>
-            <td><a href="<c:url value='/delete?id=${person.id}' />" class="btn btn-success
+            <td><a href="<c:url value='/delete/${person.id}' />" class="btn btn-success
 
 custom-width">delete</a></td>
         </tr>

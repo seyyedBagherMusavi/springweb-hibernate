@@ -41,8 +41,8 @@ public class PersonController {
         model.addAttribute("persons",p);
         return "selectAll";
     }
-    @GetMapping("/delete")
-    public String save(@Valid @ModelAttribute("id") Long id,Model model){
+    @RequestMapping("/delete/{id}")
+    public String save(@PathVariable("id") int id,Model model){
         personService.delete(id);
         List<Person> p = personService.selectAll();
         model.addAttribute("persons",p);
